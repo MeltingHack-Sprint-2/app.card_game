@@ -12,8 +12,8 @@ jobs:
           java-version: "11"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.x"
-          channel: "any" # or: 'beta' or 'master'
+          flutter-version: "3.3.x"
+          channel: "stable" # or: 'beta' or 'master'
       - run: flutter pub get
       - run: flutter build apk --debug
 
@@ -29,8 +29,8 @@ jobs:
           java-version: "11"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.x"
-          channel: "any" # or: 'beta' or 'master'
+          flutter-version: "3.3.x"
+          channel: "stable" # or: 'beta' or 'master'
       - run: flutter pub get
       - run: flutter build apk --debug
 
@@ -46,7 +46,7 @@ jobs:
           java-version: "11"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.x"
-          channel: "any" # or: 'beta' or 'master'
+          flutter-version: "3.3.x"
+          channel: "stable" # or: 'beta' or 'master'
       - run: flutter pub get
 #      - run: flutter build apk
