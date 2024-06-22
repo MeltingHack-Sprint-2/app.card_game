@@ -1,4 +1,7 @@
+import 'package:card_game/components/alerts/host_game_dialog.dart';
+import 'package:card_game/components/alerts/join_game_dialog.dart';
 import 'package:card_game/components/buttons/button.dart';
+import 'package:card_game/modules/play/screens/play_screen.dart';
 import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +9,7 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routename = '/home';
+
   const HomeScreen({super.key});
 
   @override
@@ -22,14 +26,23 @@ class HomeScreen extends StatelessWidget {
             children: [
               PrimaryButton(
                 text: "HOST",
-                onPressed: () {},
+                onPressed: () {
+                  HostGameDialogHelper.showGameDialog(
+                      theme: theme, context: context);
+                },
               ),
               const SizedBox(
                 height: 16,
               ),
               SecondaryButton(
                 text: "JOIN",
-                onPressed: () {},
+                onPressed: () {
+                  JoinGameDialogHelper.showGameDialog(
+                      theme: theme,
+                      context: context,
+                      onPressed: () =>
+                          Navigator.pushNamed(context, PlayScreen.routename));
+                },
               )
             ],
           ),

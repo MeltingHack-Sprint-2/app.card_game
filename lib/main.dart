@@ -1,16 +1,24 @@
 import 'package:card_game/core/config/app_config.dart';
 import 'package:card_game/core/config/app_instance.dart';
+import 'package:card_game/core/router/router.dart';
 import 'package:card_game/modules/home/screens/home_screen.dart';
+import 'package:card_game/modules/play/state/game_state.dart';
 import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   const env = String.fromEnvironment("ENVIRONMENT");
   // Ensure widgets binding is initialized before running the app.
   WidgetsFlutterBinding.ensureInitialized();
   // Set preferred device orientations to portrait mode (both up and down).
-  runApp(EasyPoker(
-    appConfig: await AppConfig.forEnvironment(env: env),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => GameState())
+    ],
+    child: EasyPoker(
+      appConfig: await AppConfig.forEnvironment(env: env),
+    ),
   ));
 }
 
@@ -26,6 +34,7 @@ class EasyPoker extends StatelessWidget {
       child: MaterialApp(
         title: 'Easy Poker',
         home: HomeScreen(),
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }
