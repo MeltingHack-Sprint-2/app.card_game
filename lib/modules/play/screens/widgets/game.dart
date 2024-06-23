@@ -5,6 +5,7 @@ import 'package:card_game/modules/play/api/enums/game_events.dart';
 import 'package:card_game/modules/play/api/models/card_model.dart';
 import 'package:card_game/modules/play/screens/widgets/avatar.dart';
 import 'package:card_game/modules/play/state/game_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,8 @@ class _GameState extends State<Game> {
     final currentPlayer = gameState.currentPlayer;
     final players = gameState.players;
     final hands = gameState.hands;
-    final topCard = gameState.topCard;
+    // final topCard = gameState.topCard;
+    final topCard = CardModel(id: "1", color: "red", value: "skip");
 
     if (!gameState.started) {
       return const Loader(
@@ -60,6 +62,8 @@ class _GameState extends State<Game> {
     final otherCards = [
       CardModel(id: "1", color: "blue", value: "2"),
       CardModel(id: "1", color: "blue", value: "2"),
+      CardModel(id: "1", color: "blue", value: "2"),
+      CardModel(id: "1", color: "blue", value: "2"),
     ];
     final ownCards = [
       CardModel(id: "1", color: "red", value: "2"),
@@ -71,28 +75,7 @@ class _GameState extends State<Game> {
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
       child: Column(
         children: [
-          Expanded(
-            child: Column(
-              children: [
-                Avatar(
-                  // name: otherPlayer.name ,
-                  name: "Mori"
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    children: otherCards.map((card) {
-                      return UnoCard(
-                        card: card,
-                        hidden: true,
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _opponentDeck(playerName: "Mori", cards: otherCards, hidden: true),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -107,35 +90,88 @@ class _GameState extends State<Game> {
               ),
             ],
           ),
-
-         const SizedBox(height: 20,),
-          Expanded(
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-
-                  child: Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    children: ownCards.map((card) {
-                      return UnoCard(
-                        card: card,
-                        onClick: (playerId, cardId) =>
-                            gameState.playCard(currentPlayer.id, card.id),
-                        hidden: false,
-                      );
-                    }).toList(),
-                  ),
-                ),
-                Avatar(
-                  // name: currentPlayer.name,
-                  name :"Urnna"
-                ),
-              ],
-            ),
+          const SizedBox(
+            height: 20,
           ),
+          _playerDeck(
+              playerName: "Urnaa",
+              cards: ownCards,
+              hidden: false,
+              isCurrentPlayer: true),
         ],
       ),
     );
   }
+}
+
+Widget _playerDeck(
+    {required String playerName,
+    required List<CardModel> cards,
+    required bool hidden,
+    bool isCurrentPlayer = false}) {
+  return Expanded(
+    child: Column(
+      children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            // mainAxisSize: MainAxisSize.min,
+            children: cards.map((card) {
+              return UnoCard(
+                card: card,
+                hidden: hidden,
+              );
+            }).toList(),
+          ),
+        ),
+        if (isCurrentPlayer)
+          const SizedBox(
+            height: 8,
+          ),
+        if (isCurrentPlayer)
+          Avatar(
+              // name: otherPlayer.name ,
+              name: playerName),
+      ],
+    ),
+  );
+}
+
+Widget _opponentDeck({
+  required String playerName,
+  required List<CardModel> cards,
+  required bool hidden,
+}) {
+  return Expanded(
+    child: Column(
+      children: [
+        Avatar(
+            // name: otherPlayer.name ,
+            name: playerName),
+        const SizedBox(
+          height: 8,
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              UnoCard(
+                card: CardModel(id: '1', color: 'blue', value: '1'),
+                hidden: true,
+              ),
+              UnoCard(
+                card: CardModel(id: '1', color: 'blue', value: '1'),
+                hidden: true,
+              ),
+              UnoCard(
+                card: CardModel(id: '1', color: 'blue', value: '1'),
+                hidden: true,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }

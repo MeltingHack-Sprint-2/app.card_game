@@ -38,8 +38,8 @@ class SecondaryButton extends StatelessWidget {
           style: theme.secondaryButton.copyWith(
               backgroundColor: MaterialStateProperty.resolveWith(
                 (states) => states.contains(MaterialState.disabled)
-                    ? backgroundColor ?? AppColors.lightGrey
-                    : backgroundColor ?? AppColors.lightGrey,
+                    ? backgroundColor ?? AppColors.lightRed
+                    : backgroundColor ?? AppColors.lightRed,
               ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(

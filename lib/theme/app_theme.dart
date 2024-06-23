@@ -35,7 +35,7 @@ class EasyPockerTheme {
       // Define the overall color scheme
       colorScheme: const ColorScheme(
         brightness: Brightness.dark,
-        primary: AppColors.darkBlue,
+        primary: AppColors.lightYellow,
         onPrimary: AppColors.white,
         secondary: AppColors.deepBrown,
         onSecondary: Color.fromRGBO(30, 30, 30, 1),

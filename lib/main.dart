@@ -32,6 +32,7 @@ class EasyPoker extends StatelessWidget {
     AppInstance().setConfig(appConfig);
     return const AppTheme(
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Easy Poker',
         home: HomeScreen(),
         onGenerateRoute: RouteGenerator.generateRoute,

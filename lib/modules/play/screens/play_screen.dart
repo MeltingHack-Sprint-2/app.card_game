@@ -33,7 +33,7 @@ class PlayScreen extends StatelessWidget {
           },
         ),
         ],),
-        body: Game(),
+        body: const Game(),
     );
   }
 }

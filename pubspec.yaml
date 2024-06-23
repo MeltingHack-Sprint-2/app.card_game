@@ -74,6 +74,7 @@ flutter:
     - assets/
     - assets/config/
     - assets/cards/
+    - assets/images/
     - assets/cards/black/
     - assets/cards/blue/
     - assets/cards/green/

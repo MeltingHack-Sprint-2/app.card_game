@@ -29,47 +29,45 @@ class CardStack extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           height: 200,
-          width: 100,
+          width: 150,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.black),
+            // border: Border.all(color: Colors.black),
           ),
           child: Stack(
             children: [
+
+              Positioned(
+                // top: size == UnoCardSizes.large ? 8.0 : 6.0,
+                // left: size == UnoCardSizes.large ? 6.0 : 4.0,
+                top: 0,
+                // right: 0,
+                child: BlankCard(
+                  size: size,
+                  hidden: hidden,
+                ),
+              ),
+              Positioned(
+                // top: size == UnoCardSizes.large ? 8.0 : 6.0,
+                // left: size == UnoCardSizes.large ? 18.0 : 12.0,
+                // left: 2,
+                child: BlankCard(
+                  size: size,
+                  hidden: hidden,
+                ),
+              ),
               if (card != null)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: UnoCard(
-                    size: size,
-                    card: card!,
-                    hidden: hidden,
-                  ),
-                ),
               Positioned(
-                top: size == UnoCardSizes.large ? 8.0 : 6.0,
-                left: size == UnoCardSizes.large ? 6.0 : 4.0,
-                child: BlankCard(
+                top: 0,
+                left: 1,
+                child: UnoCard(
                   size: size,
+                  card: card!,
                   hidden: hidden,
                 ),
               ),
-              Positioned(
-                top: size == UnoCardSizes.large ? 8.0 : 6.0,
-                left: size == UnoCardSizes.large ? 12.0 : 8.0,
-                child: BlankCard(
-                  size: size,
-                  hidden: hidden,
-                ),
-              ),
-              Positioned(
-                top: size == UnoCardSizes.large ? 8.0 : 6.0,
-                left: size == UnoCardSizes.large ? 18.0 : 12.0,
-                child: BlankCard(
-                  size: size,
-                  hidden: hidden,
-                ),
-              ),
+
+
             ],
           ),
         ),

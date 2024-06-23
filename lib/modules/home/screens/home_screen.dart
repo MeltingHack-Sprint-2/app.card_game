@@ -24,6 +24,8 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Image.asset("assets/images/img_uno-logo.png"),
+              const SizedBox(height: 20,),
               PrimaryButton(
                 text: "HOST",
                 onPressed: () {

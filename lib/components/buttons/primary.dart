@@ -51,7 +51,7 @@ class PrimaryButton extends StatelessWidget {
               : Text(
                   text,
                   style: theme.materialData.textTheme.labelMedium?.copyWith(
-                      color: Colors.white, fontSize: fontSize, height: 1),
+                      color: Colors.black, fontSize: fontSize, height: 1),
                 ),
         ));
   }
