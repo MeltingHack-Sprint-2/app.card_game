@@ -16,7 +16,8 @@ class GameState with ChangeNotifier {
   bool started = true;
   List<Player> players = [];
   // late GameConfig config;
-  GameConfig config = GameConfig(action: GameAction.join, name: "Zuqo", room: "room", handSize: 7);
+  GameConfig config = GameConfig(
+      action: GameAction.join, name: "Zuqo", room: "room", handSize: 7);
   late Player currentPlayer = Player(id: "1", name: "Zuqo");
   Timer? _refetchTimer;
   Map<String, List<CardModel>> hands = {};
@@ -86,7 +87,8 @@ class GameState with ChangeNotifier {
   }
 
   void updateGameState(dynamic data) {
-    hands = (data['hands'] as Map).map((key, value) => MapEntry(key, (value as List).map((card) => CardModel.fromJson(card)).toList()));
+    hands = (data['hands'] as Map).map((key, value) => MapEntry(
+        key, (value as List).map((card) => CardModel.fromJson(card)).toList()));
     topCard = CardModel.fromJson(data['top_card']);
     notifyListeners();
   }
@@ -96,7 +98,8 @@ class GameState with ChangeNotifier {
     switch (reason) {
       case GameOverReason.won:
         final winner = Player.fromJson(data['winner']);
-        Navigator.of(context).pushReplacementNamed(Routes.won, arguments: {"winner": winner});
+        Navigator.of(context).pushReplacementNamed(Routes.winScreen,
+            arguments: {"winner": winner});
         break;
       case GameOverReason.insufficientPlayers:
         Fluttertoast.showToast(msg: 'Insufficient players. Refreshing...');
@@ -116,7 +119,8 @@ class GameState with ChangeNotifier {
   }
 
   void drawCard() {
-    socket.emit(Events.GAME_DRAW, {'player_id': currentPlayer.id, 'room': config.room});
+    socket.emit(
+        Events.GAME_DRAW, {'player_id': currentPlayer.id, 'room': config.room});
   }
 
   void handleSocketMessage(dynamic message) {
@@ -204,10 +208,6 @@ class GameState with ChangeNotifier {
     clearGameStateInterval();
     super.dispose();
   }
-
 }
 
-enum GameOverReason {
-  won, insufficientPlayers
-}
-
+enum GameOverReason { won, insufficientPlayers }
