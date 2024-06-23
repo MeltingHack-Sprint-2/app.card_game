@@ -117,7 +117,6 @@ class _WinScreenState extends State<WinScreen> {
                           'Winner!\n${widget.winnerName}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: 'Bungee',
                             fontSize: 70,
                             fontWeight: FontWeight.bold,
                             height: 0.9,
@@ -131,7 +130,6 @@ class _WinScreenState extends State<WinScreen> {
                         'Winner!\n${widget.winnerName}',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: 'Bungee',
                           fontSize: 70,
                           fontWeight: FontWeight.bold,
                           height: 0.9,
