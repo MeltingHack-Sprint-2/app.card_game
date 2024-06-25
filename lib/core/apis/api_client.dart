@@ -1,12 +1,11 @@
 
 import 'package:card_game/core/apis/api_request_extension.dart';
 import 'package:card_game/core/config/app_instance.dart';
-import 'package:card_game/core/persistence/secure_storage/storage_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 // Artisan client class for handling API request
-class ArtisanClient {
+class UnoClient {
   final _logger = Logger(); // For logging instance messages
   // Static method to get the base url path from the app instance configuration
   static get baseURLPath => AppInstance().config()!.apiUrl;
@@ -70,32 +69,11 @@ class ArtisanClient {
 
   // Method to create base header for API requests
   Future<Map<String, String>> _createBaseHeaders() async {
-    final IsSecureStorageManager secureStorageManager = SecureStorageManager();
-    final token = await secureStorageManager.getGToken();
-    // final sessionId = await secureStorageManager.getSessionId();
-
-  
-    // Log the token
-    _logger.d("Header token $token"); // Logging the token
     // Base headers
     Map<String, String> headers = {
       'content-type': 'application/json',
       'Accept': 'application/json',
     };
-
-    // Add Authorization header if token exists
-    if (token != null) {
-      headers['Authorization'] = 'Bearer $token';
-    }
-
-    // Add Cookie header if sessionId exists
-    // if (sessionId != null) {
-    //   headers['cookie'] = sessionId;
-    // }
-
-    // Log the token for debugging purposes
-    _logger.d("Header token $token"); // Logging the token
-
     return headers;
   }
 }

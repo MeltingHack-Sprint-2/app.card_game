@@ -1,5 +1,7 @@
 import 'package:card_game/core/router/routes.dart';
 import 'package:card_game/modules/home/screens/home_screen.dart';
+import 'package:card_game/modules/home/screens/host/host_screen.dart';
+import 'package:card_game/modules/home/screens/join/join_screen.dart';
 import 'package:card_game/modules/play/screens/play_screen.dart';
 import 'package:card_game/modules/win/screens/win_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +14,17 @@ class RouteGenerator {
       case Routes.home:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case Routes.playScreen:
-        return CupertinoPageRoute(builder: (_) => const PlayScreen());
+        return CupertinoPageRoute(
+            builder: (_) => PlayScreen(
+                  config: args!["config"],
+                  currentPlayer: args["player"],
+                ));
+      case Routes.hostScreen:
+        return CupertinoPageRoute(
+          builder: (_) => const HostScreen(),
+        );
+      case Routes.joinScreen:
+        return CupertinoPageRoute(builder: (_) => const JoinScreen());
       case Routes.winScreen:
         return MaterialPageRoute(
             builder: (_) => const WinScreen(

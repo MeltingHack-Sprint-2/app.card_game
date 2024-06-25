@@ -1,6 +1,5 @@
 
 // GameConfig model
-import 'package:card_game/modules/play/api/enums/game_action.dart';
 
 class GameConfig {
   final String action;

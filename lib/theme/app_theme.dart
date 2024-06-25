@@ -180,10 +180,6 @@ class EasyPockerTheme {
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
-          // side: BorderSide(
-          //   color: colorScheme.primary,
-          //   width: 1.5,
-          // ),
         ),
       ),
     );

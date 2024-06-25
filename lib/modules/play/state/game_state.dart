@@ -56,6 +56,10 @@ class GameState with ChangeNotifier {
           .toList());
     });
 
+    socket.on(Events.GAME_OVER, (data){
+      // handleGameOver(data, context);
+    });
+
     socket.on(Events.GAME_START, (_) {
       setStarted(true);
     });

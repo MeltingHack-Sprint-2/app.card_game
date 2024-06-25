@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 // AppConfig class for managing the application configuration
 class AppConfig {
   final String apiUrl; // API URL for the application
+  final String wsUrl; // Websocket URL
   // Constructor for the AppConfig class
-  AppConfig({required this.apiUrl});
+  AppConfig({required this.apiUrl, required this.wsUrl});
   // Constants for different environment types
   static const String dev = 'dev';
   static const String prod = 'prod';
@@ -34,6 +35,6 @@ class AppConfig {
     final json = jsonDecode(contents);
 
     // Create an instance of AppConfig with the API URL from the JSON
-    return AppConfig(apiUrl: json['apiUrl']);
+    return AppConfig(apiUrl: json['apiUrl'], wsUrl: json['wsUrl']);
   }
 }
