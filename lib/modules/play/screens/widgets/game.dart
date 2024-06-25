@@ -6,35 +6,25 @@ import 'package:card_game/modules/play/bloc/game_bloc.dart';
 import 'package:card_game/modules/play/screens/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Game extends StatefulWidget {
-  final GameBloc bloc;
+class Game extends StatelessWidget {
   final GameState state;
   const Game({
     super.key,
-    required this.bloc,
     required this.state,
   });
 
   @override
-  State<Game> createState() => _GameState();
-}
-
-class _GameState extends State<Game> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final currentPlayer = widget.state.currentPlayer;
-    final players = widget.state.players;
-    final hands = widget.state.hands;
+    final currentPlayer = state.currentPlayer;
+    final players = state.players;
+    final hands = state.hands;
     // final topCard = gameState.topCard;
-    final topCard = CardModel(id: "1", color: "red", value: "skip");
+    final topCard =
+        state.topCard ?? CardModel(id: "1", color: "red", value: "skip");
 
-    if (!widget.state.started) {
+    if (!state.started) {
       return const Loader(
         label: 'Loading game...',
       );
@@ -42,7 +32,7 @@ class _GameState extends State<Game> {
 
     final otherPlayer =
         players.firstWhere((player) => player.id != currentPlayer.id);
-    // final otherCards = hands[otherPlayer.id] ?? [];
+
     final ownCards = hands[currentPlayer.id] ?? [];
 
     return Padding(
@@ -55,7 +45,9 @@ class _GameState extends State<Game> {
             children: [
               CardStack(
                 size: UnoCardSizes.large,
-                // onClick: widget.bloc.add(DrawCard()),
+                onClick: () {
+                  context.read<GameBloc>().add(DrawCard());
+                },
                 hidden: true,
               ),
               CardStack(

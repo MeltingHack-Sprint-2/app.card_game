@@ -17,7 +17,6 @@ class PlayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.easyPockerTheme;
-    // final gameState = Provider.of<GameState>(context);
     return BlocProvider(
       create: (context) =>
           GameBloc(config, currentPlayer), // Add config and current player
@@ -40,7 +39,7 @@ class PlayScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: Game(bloc: context.read<GameBloc>(), state: state ),
+            body: Game(state: state),
           );
         },
       ),
