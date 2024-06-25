@@ -10,6 +10,7 @@ class PlayScreen extends StatelessWidget {
   static const routename = "/playScreen";
   final GameConfig config;
   final Player currentPlayer;
+
   const PlayScreen(
       {super.key, required this.config, required this.currentPlayer});
 
@@ -21,9 +22,7 @@ class PlayScreen extends StatelessWidget {
       create: (context) =>
           GameBloc(config, currentPlayer), // Add config and current player
       child: BlocConsumer<GameBloc, GameState>(
-        listener: (context, state) {
-
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             backgroundColor: theme.colorScheme.background,
@@ -36,13 +35,12 @@ class PlayScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.exit_to_app),
                   onPressed: () {
-          
-            Navigator.pop(context);
-          },
-        ),
+                    context.read<GameBloc>().add(PlayerLeave());
+                  },
+                ),
               ],
             ),
-            body: const Game(),
+            body: Game(bloc: context.read<GameBloc>(), state: state ),
           );
         },
       ),

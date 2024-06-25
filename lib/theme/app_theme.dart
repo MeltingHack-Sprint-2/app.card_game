@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 class AppTheme extends StatelessWidget {
   // Provides the AppTheme to whatever widget it is wrapped around
-  const AppTheme({Key? key, required this.child}) : super(key: key);
+  const AppTheme({super.key, required this.child});
   final Widget child;
 
   @override
@@ -50,73 +50,73 @@ class EasyPockerTheme {
       textTheme: const TextTheme(
         // TEXT STYLES
         displayLarge: TextStyle(
-          fontFamily: 'Playfair Display',
+          fontFamily: 'Caveat',
           fontSize: 26.0,
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
         displayMedium: TextStyle(
-          fontFamily: 'Playfair Display',
+          fontFamily: 'Caveat',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
         ),
         displaySmall: TextStyle(
-          fontFamily: 'Playfair Display',
+          fontFamily: 'Caveat',
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
         ),
         titleSmall: TextStyle(
-          fontFamily: 'Playfair Display',
+          fontFamily: 'Caveat',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: ElementColors.title,
         ),
         titleMedium: TextStyle(
-          fontFamily: 'Playfair Display',
+          fontFamily: 'Caveat',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: ElementColors.title,
         ),
         titleLarge: TextStyle(
-          fontFamily: 'Playfair Display',
+          fontFamily: 'Caveat',
           fontSize: 24,
           fontWeight: FontWeight.w600,
           color: ElementColors.title,
         ),
         bodyLarge: TextStyle(
-          fontFamily: 'Open Sans',
+          fontFamily: 'Caveat',
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
         ),
         bodyMedium: TextStyle(
-          fontFamily: 'Open Sans',
+          fontFamily: 'Caveat',
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: AppColors.black,
         ),
         bodySmall: TextStyle(
-          fontFamily: 'Open Sans',
+          fontFamily: 'Caveat',
           fontSize: 12,
           fontWeight: FontWeight.w300,
           color: AppColors.black,
         ),
         labelLarge: TextStyle(
-          fontFamily: 'Open Sans',
+          fontFamily: 'Caveat',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
         ),
         labelMedium: TextStyle(
-          fontFamily: 'Open Sans',
+          fontFamily: 'Caveat',
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
         ),
         labelSmall: TextStyle(
-          fontFamily: 'Open Sans',
+          fontFamily: 'Caveat',
           fontSize: 12,
           fontWeight: FontWeight.w600,
           color: AppColors.black,

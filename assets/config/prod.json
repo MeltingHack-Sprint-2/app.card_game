@@ -1,4 +1,4 @@
 {
-    "apiUrl": " https://apicardgame-production.up.railway.app",
+    "apiUrl": "https://apicardgame-production.up.railway.app",
     "wsUrl": "ws://apicardgame-production.up.railway.app/socket.io/?EIO=4&transport=websocket"
 }
