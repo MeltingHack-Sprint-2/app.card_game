@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:card_game/components/Textfields/primary.dart';
 import 'package:card_game/components/appbar/app_bar.dart';
 import 'package:card_game/components/buttons/primary.dart';
@@ -9,9 +11,18 @@ import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+String generateRandomString(int length) {
+  const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  Random rnd = Random();
+
+  return String.fromCharCodes(Iterable.generate(
+      length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+}
+
 class HostScreen extends StatelessWidget {
   static const routename = '/hostScreen';
   const HostScreen({super.key});
+  static final room = generateRandomString(8);
 
   @override
   Widget build(BuildContext context) {
@@ -19,86 +30,82 @@ class HostScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => HostBloc(),
       child: BlocConsumer<HostBloc, HostState>(
-        listener: (context, state){
+        listener: (context, state) {
           if (state is HostSuccessState) {
-            Navigator.pushNamed(context, PlayScreen.routename,
-                arguments: {
-                  "config": state.config,
-                  "player": state.currentPlayer
-                });
+            Navigator.pushNamed(context, PlayScreen.routename, arguments: {
+              "config": state.config,
+              "player": state.currentPlayer
+            });
           }
         },
-        builder:(context, state) => Scaffold(
+        builder: (context, state) => Scaffold(
           backgroundColor: theme.colorScheme.background,
           appBar: UnoAppBar.create(theme: theme, context: context),
-          body:
-            ListView(
-              padding: const EdgeInsets.all(16.0),
-
-              children: [
-                Text("Host", style: theme.materialData.textTheme.displayLarge),
-                const SizedBox(height: 16),
-                Text("Enter Credentials to host game",
-                    style: theme.materialData.textTheme.bodyMedium),
-                const SizedBox(height: 24),
-                PrimaryTextField(
-                  errorText: state.name.valueInvalidMessage,
-                  onChanged: (value) {
-                    context.read<HostBloc>().add(HostFormPropertyChanged(
-                        type: HostFormPropertyType.name, value: value));
-                  },
-                  hintText: "John Doe",
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  "Room",
-                  style: theme.materialData.textTheme.bodyMedium,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                _codeDisplay(code: "XYZWE_D", theme: theme),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  "Hand Size",
-                  style: theme.materialData.textTheme.bodyMedium,
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                PrimaryTextField(
-                  errorText: state.handSize.valueInvalidMessage,
-                  onChanged: (value) {
-                    context.read<HostBloc>().add(HostFormPropertyChanged(
-                        type: HostFormPropertyType.handSize, value: value));
-                  },
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                PrimaryButton(
-                  text: "Host",
-                  inProgress: state.inProgress,
-                  onPressed: state.isValid
-                      ? () => context.read<HostBloc>().add(HostGameEvent(
-                    name: state.name.value,
-                    room: "fhgjfdxd", // TODO::
-                    handSize: state.handSize.value,
-                  ))
-                      : null,
-                ),
-              ],
-            ),
+          body: ListView(
+            padding: const EdgeInsets.all(16.0),
+            children: [
+              Text("Host", style: theme.materialData.textTheme.displayLarge),
+              const SizedBox(height: 16),
+              Text("Enter Credentials to host game",
+                  style: theme.materialData.textTheme.bodyMedium),
+              const SizedBox(height: 24),
+              PrimaryTextField(
+                errorText: state.name.valueInvalidMessage,
+                onChanged: (value) {
+                  context.read<HostBloc>().add(HostFormPropertyChanged(
+                      type: HostFormPropertyType.name, value: value));
+                },
+                hintText: "John Doe",
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Room",
+                style: theme.materialData.textTheme.bodyMedium,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              _codeDisplay(code: room, theme: theme),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Hand Size",
+                style: theme.materialData.textTheme.bodyMedium,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              PrimaryTextField(
+                errorText: state.handSize.valueInvalidMessage,
+                onChanged: (value) {
+                  context.read<HostBloc>().add(HostFormPropertyChanged(
+                      type: HostFormPropertyType.handSize, value: value));
+                },
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              PrimaryButton(
+                text: "Host",
+                inProgress: state.inProgress,
+                onPressed: state.isValid
+                    ? () => context.read<HostBloc>().add(HostGameEvent(
+                          name: state.name.value,
+                          room: room, // TODO::
+                          handSize: state.handSize.value,
+                        ))
+                    : null,
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }
-
 
 Widget _codeDisplay({required String code, required EasyPockerTheme theme}) {
   return Container(
