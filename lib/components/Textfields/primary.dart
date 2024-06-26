@@ -5,23 +5,23 @@ import 'package:flutter/services.dart';
 class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField(
       {super.key,
-        this.onChanged,
-        this.controller,
-        this.errorText,
-        this.labelText,
-        this.hintText,
-        this.initialValue,
-        this.keyboardType,
-        this.suffixIcon,
-        this.prefixText,
-        this.maxLine = 1,
-        this.minLine = 1,
-        this.contentPadding,
-        this.readOnly = false,
-        this.isDirty,
-        this.textCapitalization,
-        this.textInputAction,
-        this.textInputFormatters});
+      this.onChanged,
+      this.controller,
+      this.errorText,
+      this.labelText,
+      this.hintText,
+      this.initialValue,
+      this.keyboardType,
+      this.suffixIcon,
+      this.prefixText,
+      this.maxLine = 1,
+      this.minLine = 1,
+      this.contentPadding,
+      this.readOnly = false,
+      this.isDirty,
+      this.textCapitalization,
+      this.textInputAction,
+      this.textInputFormatters});
 
   final void Function(String)? onChanged;
   final TextEditingController? controller;
@@ -50,9 +50,9 @@ class PrimaryTextField extends StatelessWidget {
       textCapitalization: textCapitalization ?? TextCapitalization.sentences,
       textInputAction: textInputAction,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      cursorColor: theme.colorScheme.primary,
+      cursorColor: theme.colorScheme.onSecondary,
       style: theme.materialData.textTheme.bodyMedium
-          ?.copyWith(color: theme.colorScheme.primary, fontSize: 15),
+          ?.copyWith(color: theme.colorScheme.onSecondary, fontSize: 15),
       readOnly: readOnly,
       maxLines: maxLine,
       minLines: minLine,
@@ -60,21 +60,21 @@ class PrimaryTextField extends StatelessWidget {
       controller: controller,
       decoration: theme
           .primaryInputDecoration(
-          themeData: theme.materialData,
-          colorScheme: theme.colorScheme,
-          isDirty: isDirty,
-          hintText: hintText,
-          errorText: errorText,
-          labelText: labelText,
-          suffixIcon: Padding(
-            padding: const EdgeInsets.only(top: 14, bottom: 14, right: 14),
-            child: suffixIcon,
-          ))
+              themeData: theme.materialData,
+              colorScheme: theme.colorScheme,
+              isDirty: isDirty,
+              hintText: hintText,
+              errorText: errorText,
+              labelText: labelText,
+              suffixIcon: Padding(
+                padding: const EdgeInsets.only(top: 14, bottom: 14, right: 14),
+                child: suffixIcon,
+              ))
           .copyWith(
-          alignLabelWithHint: true,
-          contentPadding: contentPadding ??
-              const EdgeInsets.only(
-                  left: 14, top: 16, right: 14, bottom: 14)),
+              alignLabelWithHint: true,
+              contentPadding: contentPadding ??
+                  const EdgeInsets.only(
+                      left: 14, top: 16, right: 14, bottom: 14)),
       onChanged: onChanged,
     );
   }
