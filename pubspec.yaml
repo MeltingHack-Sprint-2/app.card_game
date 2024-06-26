@@ -101,15 +101,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Caveat
+    - family: Cabin
       fonts:
-        - asset: assets/fonts/Caveat-Regular.ttf
+        - asset: assets/fonts/Cabin-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Caveat-Medium.ttf
+        - asset: assets/fonts/Cabin-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Caveat-SemiBold.ttf
+        - asset: assets/fonts/Cabin-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Caveat-Bold.ttf
+        - asset: assets/fonts/Cabin-Bold.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:
