@@ -17,7 +17,8 @@ class AppTheme extends StatelessWidget {
 // Provides a consistent theme accross the application
 class EasyPockerTheme {
   // Singleton instance to ensure a single theme object throughout the app
-  static final EasyPockerTheme _easyPockerTheme = EasyPockerTheme._privateConstructor();
+  static final EasyPockerTheme _easyPockerTheme =
+      EasyPockerTheme._privateConstructor();
 
   // Constructor to return the singleton instance
   static EasyPockerTheme get standard => _easyPockerTheme;
@@ -50,73 +51,73 @@ class EasyPockerTheme {
       textTheme: const TextTheme(
         // TEXT STYLES
         displayLarge: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 26.0,
           fontWeight: FontWeight.w700,
           color: AppColors.black,
         ),
         displayMedium: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
         ),
         displaySmall: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
         ),
         titleSmall: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: ElementColors.title,
         ),
         titleMedium: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: ElementColors.title,
         ),
         titleLarge: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 24,
           fontWeight: FontWeight.w600,
           color: ElementColors.title,
         ),
         bodyLarge: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: AppColors.black,
         ),
         bodyMedium: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: AppColors.black,
         ),
         bodySmall: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 12,
           fontWeight: FontWeight.w300,
           color: AppColors.black,
         ),
         labelLarge: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
         ),
         labelMedium: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
         ),
         labelSmall: TextStyle(
-          fontFamily: 'Caveat',
+          fontFamily: 'Cabin',
           fontSize: 12,
           fontWeight: FontWeight.w600,
           color: AppColors.black,
