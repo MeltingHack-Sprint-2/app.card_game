@@ -1,11 +1,11 @@
 import 'package:card_game/components/cards/card_stack.dart';
 import 'package:card_game/components/cards/uno_card.dart';
-import 'package:card_game/components/loader/loader.dart';
 import 'package:card_game/modules/play/api/models/card_model.dart';
 import 'package:card_game/modules/play/bloc/game_bloc.dart';
 import 'package:card_game/modules/play/screens/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class Game extends StatelessWidget {
@@ -17,18 +17,12 @@ class Game extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentPlayer = state.currentPlayer;
+    final currentPlayer = state.players
+        .firstWhere((player) => player.name == state.currentPlayer);
     final players = state.players;
     final hands = state.hands;
-    // final topCard = gameState.topCard;
     final topCard =
         state.topCard ?? CardModel(id: "1", color: "red", value: "skip");
-
-    if (!state.started) {
-      return const Loader(
-        label: 'Loading game...',
-      );
-    }
 
     final otherPlayer =
         players.firstWhere((player) => player.id != currentPlayer.id);
@@ -41,7 +35,7 @@ class Game extends StatelessWidget {
         children: [
           _opponentDeck(playerName: otherPlayer.name, hidden: true),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               CardStack(
                 size: UnoCardSizes.large,
@@ -63,18 +57,22 @@ class Game extends StatelessWidget {
               playerName: currentPlayer.name,
               cards: ownCards,
               hidden: false,
-              isCurrentPlayer: true),
+              playerId: currentPlayer.id,
+              context: context,
+              ),
         ],
       ),
     );
   }
 }
 
-Widget _playerDeck(
-    {required String playerName,
-    required List<CardModel> cards,
-    required bool hidden,
-    bool isCurrentPlayer = false}) {
+Widget _playerDeck({
+  required String playerName,
+  required List<CardModel> cards,
+  required bool hidden,
+  required BuildContext context,
+  required String playerId,
+}) {
   return Expanded(
     child: Column(
       children: [
@@ -85,19 +83,18 @@ Widget _playerDeck(
             children: cards.map((card) {
               return UnoCard(
                 card: card,
+                onClick: () => context.read<GameBloc>().add(PlayCard(playerId: playerId, cardId: card.id)),
                 hidden: hidden,
               );
             }).toList(),
           ),
         ),
-        if (isCurrentPlayer)
-          const SizedBox(
-            height: 8,
-          ),
-        if (isCurrentPlayer)
-          Avatar(
-              // name: otherPlayer.name ,
-              name: playerName),
+        const SizedBox(
+          height: 8,
+        ),
+        Avatar(
+            // name: otherPlayer.name ,
+            name: playerName),
       ],
     ),
   );

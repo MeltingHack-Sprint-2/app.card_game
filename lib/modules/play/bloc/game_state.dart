@@ -19,7 +19,7 @@ class GameState extends Equatable {
   final CardModel? topCard;
   final String? errorMessage;
   final GameConfig config;
-  final Player currentPlayer;
+  final String currentPlayer;
 
   GameState copyWith({
     bool? isConnected,
@@ -29,7 +29,7 @@ class GameState extends Equatable {
     CardModel? topCard,
     String? errorMessage,
     GameConfig? config,
-    Player? currentPlayer,
+    String? currentPlayer,
   }) {
     return GameState(
       isConnected: isConnected ?? this.isConnected,
@@ -45,14 +45,36 @@ class GameState extends Equatable {
 
   @override
   List<Object?> get props => [
-    isConnected,
-    started,
-    players,
-    hands,
-    topCard,
-    errorMessage,
-    config,
-    currentPlayer,
-  ];
+        isConnected,
+        started,
+        players,
+        hands,
+        topCard,
+        errorMessage,
+        config,
+        currentPlayer,
+      ];
 }
 
+class PlayerLeaveState extends GameState {
+  const PlayerLeaveState({
+    required super.config,
+    required super.currentPlayer,
+  });
+}
+
+class GameWonState extends GameState {
+  final String winner;
+  const GameWonState({
+    required this.winner,
+    required super.config,
+    required super.currentPlayer,
+  });
+}
+
+class InsufficientPlayerState extends GameState {
+  const InsufficientPlayerState({
+    required super.config,
+    required super.currentPlayer,
+  });
+}

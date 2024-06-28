@@ -69,7 +69,7 @@ class HostState extends Equatable {
 }
 
 class HostSuccessState extends HostState {
-  final Player currentPlayer;
+  final String currentPlayer;
   final GameConfig config;
 
   const HostSuccessState({

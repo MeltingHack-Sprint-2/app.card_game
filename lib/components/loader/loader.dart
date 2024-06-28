@@ -1,3 +1,4 @@
+import 'package:card_game/theme/app_colors.dart';
 import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -13,12 +14,15 @@ class Loader extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: theme.colorScheme.secondary,
-            backgroundColor: theme.colorScheme.secondary.withOpacity(0.3),
+          Text(
+            label,
+            style: theme.materialData.textTheme.bodyLarge,
           ),
           const SizedBox(height: 20),
-          Text(label),
+          CircularProgressIndicator(
+            color: AppColors.mediumGrey.withOpacity(0.3),
+            backgroundColor: AppColors.lightGrey.withOpacity(0.1),
+          ),
         ],
       ),
     );

@@ -16,7 +16,10 @@ class SendMessage extends GameEvent {
   SendMessage({required this.event, required this.data});
 }
 
+class HandleGameStart extends GameEvent {}
+
 class GameStateInterval extends GameEvent {}
+
 class PlayerLeave extends GameEvent {}
 
 class UpdateGameState extends GameEvent {
@@ -46,6 +49,16 @@ class HandleSocketMessage extends GameEvent {
   List<Object?> get props => [message];
 }
 
+class HandleGameRoom extends GameEvent {
+  final List<Player> data;
+  HandleGameRoom(this.data);
+}
+
+class HandleGameNotify extends GameEvent {
+  final dynamic data;
+  HandleGameNotify(this.data);
+}
+
 class HandleGameOver extends GameEvent {
   final dynamic data;
 
@@ -54,4 +67,3 @@ class HandleGameOver extends GameEvent {
   @override
   List<Object?> get props => [data];
 }
-

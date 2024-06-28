@@ -13,20 +13,21 @@ class JoinOrHostGameUsecase {
     required String name,
     String? handSize,
   }) async {
+    String stringWithoutWhitespace = name.replaceAll(RegExp(r'\s+'), '');
     final request = APIRequest(
         route: "/api/game/allow",
         requestType: RequestType.post,
         params: action == "join"
             ? {
                 "action": action,
-                "name": name,
+                "name": stringWithoutWhitespace,
                 "room": room,
               }
             : {
                 "action": action,
                 "name": name,
-                "room": room,
-                "hand_size": handSize ?? 7,
+                "room": room.replaceAll(RegExp(r'\s+'), ''),
+                "hand_size": handSize?.replaceAll(RegExp(r'\s+'), '') ?? 7,
               });
 
     final response = await UnoClient().executeRequest(request: request);
