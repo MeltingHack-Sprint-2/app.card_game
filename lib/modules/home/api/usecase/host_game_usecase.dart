@@ -26,7 +26,7 @@ class JoinOrHostGameUsecase {
             : {
                 "action": action,
                 "name": name,
-                "room": room,
+                "room": room.replaceAll(RegExp(r'\s+'), ''),
                 "hand_size": handSize?.replaceAll(RegExp(r'\s+'), '') ?? 7,
               });
 

@@ -20,17 +20,16 @@ class UnoCard extends StatelessWidget {
   final bool hidden;
   final UnoCardSizes size;
   // final void Function()? onClick;
-  final void Function(String, String)? onClick;
+  final void Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
     final allowPlay = onClick != null && currentPlayer != null;
-    final imageSrc =
-    getCardImageURL(card, hidden: hidden);
+    final imageSrc = getCardImageURL(card, hidden: hidden);
     return GestureDetector(
       onTap: () {
         if (allowPlay) {
-          onClick!(currentPlayer!.id, card.id);
+          onClick;
         }
       },
       child: SizedBox(
@@ -41,9 +40,7 @@ class UnoCard extends StatelessWidget {
           width: size == UnoCardSizes.large
               ? MediaQuery.of(context).size.height * 0.2
               : MediaQuery.of(context).size.height * 0.16,
-          child: SvgPicture.asset(imageSrc)
-
-      ),
+          child: SvgPicture.asset(imageSrc)),
     );
   }
 }

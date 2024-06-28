@@ -27,8 +27,8 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const JoinScreen());
       case Routes.winScreen:
         return MaterialPageRoute(
-            builder: (_) => const WinScreen(
-                  winnerName: 'Moriz',
+            builder: (_) => WinScreen(
+                  winnerName: args!["winner"],
                 ));
       default:
         return MaterialPageRoute<void>(

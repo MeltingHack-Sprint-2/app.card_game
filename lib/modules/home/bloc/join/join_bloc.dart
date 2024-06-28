@@ -6,7 +6,6 @@ import 'package:card_game/core/form/string_extension/string_validator.dart';
 import 'package:card_game/modules/home/api/usecase/host_game_usecase.dart';
 import 'package:card_game/modules/play/api/enums/game_action.dart';
 import 'package:card_game/modules/play/api/models/game_config.dart';
-import 'package:card_game/modules/play/api/models/player_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -49,7 +48,7 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
       );
       if (result.isRight) {
         emit(JoinSuccessState(
-            currentPlayer: Player(id: event.name, name: event.name),
+            currentPlayer: event.name,
             config: GameConfig(
                 action: GameAction.host,
                 name: event.name,

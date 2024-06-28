@@ -6,10 +6,10 @@ import 'package:card_game/components/buttons/text_button.dart';
 import 'package:card_game/components/loader/loader.dart';
 import 'package:card_game/core/router/routes.dart';
 import 'package:card_game/modules/play/api/models/game_config.dart';
-import 'package:card_game/modules/play/api/models/player_model.dart';
 import 'package:card_game/modules/play/bloc/game_bloc.dart';
 import 'package:card_game/modules/play/screens/widgets/avatar.dart';
 import 'package:card_game/modules/play/screens/widgets/game.dart';
+import 'package:card_game/modules/win/screens/win_screen.dart';
 import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PlayScreen extends StatelessWidget {
   static const routename = "/playScreen";
   final GameConfig config;
-  final Player currentPlayer;
+  final String currentPlayer;
 
   const PlayScreen(
       {super.key, required this.config, required this.currentPlayer});
@@ -36,6 +36,10 @@ class PlayScreen extends StatelessWidget {
               Routes.home,
               (route) => false,
             );
+          } else if (state is GameWonState) {
+            Navigator.pushNamed(context, WinScreen.routename, arguments: {
+              "winner": state.winner,
+            });
           }
         },
         builder: (context, state) {
@@ -72,7 +76,10 @@ class PlayScreen extends StatelessWidget {
                       const SizedBox(
                         height: 24,
                       ),
-                      const Loader(label: "Waiting for other players..."),
+                      Loader(
+                          label: state.players.length > 1
+                              ? "Waiting for the game to start"
+                              : "Waiting for other players..."),
                       const SizedBox(
                         height: 16,
                       ),

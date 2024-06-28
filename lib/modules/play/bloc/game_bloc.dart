@@ -18,7 +18,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   late SocketService _socketService;
   Timer? _refetchTimer;
   final _logger = Logger();
-  GameBloc(GameConfig config, Player currentPlayer)
+  GameBloc(GameConfig config, String currentPlayer)
       : super(GameState(config: config, currentPlayer: currentPlayer)) {
     // Listen to events
     on<ConnectSocket>(_onConnectSocket);
@@ -79,10 +79,20 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onUpdateGameState(UpdateGameState event, Emitter<GameState> emit) {
-    final hands = (event.data['hands'] as Map).map((key, value) => MapEntry(key,
-            (value as List).map((card) => CardModel.fromJson(card)).toList()))
-        as Hands;
-    final topCard = CardModel.fromJson(event.data['top_card']);
+    final Map<String, dynamic> eventData = event.data;
+    final Map<String, dynamic> rawHands = eventData['hands'];
+
+    final Map<String, List<CardModel>> hands = rawHands.map((key, value) {
+      // Cast value (dynamic) to List<Map<String, dynamic>>
+      final List<Map<String, dynamic>> cardList =
+          (value as List).cast<Map<String, dynamic>>();
+
+      final List<CardModel> cards =
+          cardList.map((card) => CardModel.fromJson(card)).toList();
+      return MapEntry(key, cards);
+    });
+
+    final CardModel topCard = CardModel.fromJson(eventData['top_card']);
     // _logger.d("Updating game state ${event.data['top_card']}");
     emit(state.copyWith(hands: hands, topCard: topCard));
   }
@@ -99,7 +109,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onPlayCard(PlayCard event, Emitter<GameState> emit) {
-    // _logger.d("Playing card ${event.cardId}");
+    _logger.d("Playing card ${event.cardId}");
     _socketService.sendMessage(Events.GAME_PLAY, {
       'player_id': event.playerId,
       'card_id': event.cardId,
@@ -108,9 +118,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onDrawCard(DrawCard event, Emitter<GameState> emit) {
-    _logger.d("Drawing card ${state.currentPlayer.id}");
+    final Player currentPlayer = state.players
+        .firstWhere((player) => player.name == state.currentPlayer);
+    _logger.d("Drawing card ${currentPlayer.id}");
     _socketService.sendMessage(Events.GAME_DRAW,
-        {'player_id': state.currentPlayer.id, 'room': state.config.room});
+        {'player_id': currentPlayer.id, 'room': state.config.room});
   }
 
   void _handleGameNotify(HandleGameNotify event, Emitter<GameState> emit) {
@@ -156,8 +168,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void _onHandleGameOver(HandleGameOver event, Emitter<GameState> emit) {
-    // _logger.d("Handle Game Over ${event.data['reason']}");
-    emit(state.copyWith(errorMessage: event.data['reason']));
+    final reason = event.data["reason"];
+    switch (reason) {
+      case GameOverReason.won:
+        String winner = event.data["winner"];
+        emit(GameWonState(
+            winner: winner,
+            config: state.config,
+            currentPlayer: state.currentPlayer));
+        break;
+      case GameOverReason.insufficientPlayer:
+        emit(InsufficientPlayerState(
+            config: state.config, currentPlayer: state.currentPlayer));
+      case GameOverReason.error:
+        emit(state.copyWith(errorMessage: "Something went wrong"));
+    }
   }
 
   void clearGameStateInterval() {
@@ -170,4 +195,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     clearGameStateInterval();
     return super.close();
   }
+}
+
+class GameOverReason {
+  static const won = "won";
+  static const insufficientPlayer = "insufficient-players";
+  static const error = "error";
 }

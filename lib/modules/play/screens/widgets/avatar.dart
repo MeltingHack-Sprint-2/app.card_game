@@ -10,12 +10,15 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.easyPockerTheme;
-    return CircleAvatar(
-      radius: radius,
-      backgroundColor: theme.colorScheme.primary,
-      child: Text(
-        name[0].toUpperCase(),
-        style: theme.materialData.textTheme.titleSmall,
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: CircleAvatar(
+        radius: radius,
+        backgroundColor: theme.colorScheme.primary,
+        child: Text(
+          name[0].toUpperCase(),
+          style: theme.materialData.textTheme.titleSmall,
+        ),
       ),
     );
   }

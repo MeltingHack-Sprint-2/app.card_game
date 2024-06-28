@@ -26,7 +26,7 @@ class SocketService {
 
   SocketService._internal();
 
-  void connect({required GameConfig config, required Player currentPlayer}) {
+  void connect({required GameConfig config, required String currentPlayer}) {
     _socket =
         IO.io(wsUrl, IO.OptionBuilder().setTransports(['websocket']).build());
 
@@ -50,11 +50,18 @@ class SocketService {
       _logger.d("Disconnected from $wsUrl");
     });
 
+    //On Game State
+    _socket.on(Events.GAME_STATE, (data) {
+      _logger.d("Game STATE data $data");
+      listener(UpdateGameState(data));
+    });
+
     // On game notify
     _socket.on(Events.GAME_NOTIFY, (data) {
       _logger.d("Game notify data $data");
       listener(HandleGameNotify(data));
     });
+
     // On game state interval
     _socket.on(Events.GAME_ROOM, (data) {
       _logger.d("Game room data $data");

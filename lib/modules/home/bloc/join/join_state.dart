@@ -60,7 +60,7 @@ class JoinState extends Equatable {
 }
 
 class JoinSuccessState extends JoinState {
-  final Player currentPlayer;
+  final String currentPlayer;
   final GameConfig config;
 
   const JoinSuccessState({required this.config, required this.currentPlayer});
