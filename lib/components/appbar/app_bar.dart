@@ -69,6 +69,26 @@ class UnoAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  factory UnoAppBar.game({required EasyPockerTheme theme, required Function()? onPressed}) {
+    return UnoAppBar(
+      backgroundColor: theme.colorScheme.background,
+      title: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Text(
+          "Game Room",
+          style: theme.materialData.textTheme.titleMedium,
+        ),
+      ),
+      automaticallyImplyLeading: false,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.exit_to_app),
+          onPressed: onPressed,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.easyPockerTheme;

@@ -27,25 +27,21 @@ class SocketService {
   SocketService._internal();
 
   void connect({required GameConfig config, required Player currentPlayer}) {
-    _socket = IO.io(
-        wsUrl,
-        IO.OptionBuilder()
-            .setTransports(['websocket'])
-            .disableAutoConnect()
-            .build());
+    _socket =
+        IO.io(wsUrl, IO.OptionBuilder().setTransports(['websocket']).build());
 
     // When socket connects, the current player joins the game
     _socket.onConnect((_) {
       _isConnected = true;
       listener(ConnectSocket());
       _logger.d("Connected to $wsUrl");
-      _socket.emit('message', {
-        'event': Events.PLAYER_JOIN,
-        'data': {
+      _socket.emit(
+        Events.PLAYER_JOIN,
+        {
           "name": config.name,
           "room": config.room,
         },
-      });
+      );
     });
     // Disconnect
     _socket.onDisconnect((_) {
@@ -60,9 +56,12 @@ class SocketService {
       listener(HandleGameNotify(data));
     });
     // On game state interval
-    _socket.on("game::room", (data) {
+    _socket.on(Events.GAME_ROOM, (data) {
       _logger.d("Game room data $data");
-      listener(HandleGameRoom(data));
+      final List<dynamic> list = data['players'];
+      final List<Player> playersList =
+          list.map((json) => Player.fromJson(json)).toList();
+      listener(HandleGameRoom(playersList));
     });
 
     // On game over

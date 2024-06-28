@@ -1,3 +1,5 @@
+import 'package:card_game/components/alerts/game_alert.dart';
+import 'package:card_game/components/alerts/snackbar.dart';
 import 'package:card_game/components/appbar/app_bar.dart';
 import 'package:card_game/components/buttons/button.dart';
 import 'package:card_game/components/buttons/text_button.dart';
@@ -10,6 +12,7 @@ import 'package:card_game/modules/play/screens/widgets/avatar.dart';
 import 'package:card_game/modules/play/screens/widgets/game.dart';
 import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlayScreen extends StatelessWidget {
@@ -39,20 +42,35 @@ class PlayScreen extends StatelessWidget {
           if (!state.started) {
             return Scaffold(
                 backgroundColor: theme.colorScheme.background,
+                appBar: UnoAppBar.game(
+                    theme: theme,
+                    onPressed: () {
+                      GameAlert.showAlert(
+                          context: context,
+                          theme: theme,
+                          onTapYes: () {
+                            context.read<GameBloc>().add(PlayerLeave());
+                          },
+                          onTapNo: () {
+                            Navigator.pop(context);
+                          });
+                    }),
                 body: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Wrap(
                         children: state.players
-                            .map((e) => Avatar(name: e.name))
+                            .map((e) => Avatar(
+                                  name: e.name,
+                                  radius: 30,
+                                ))
                             .toList(),
                       ),
                       const SizedBox(
-                        height: 16,
+                        height: 24,
                       ),
                       const Loader(label: "Waiting for other players..."),
                       const SizedBox(
@@ -70,7 +88,15 @@ class PlayScreen extends StatelessWidget {
                       ),
                       EasyPokerTextButton(
                         text: "Copy Room",
-                        onPressed: () {},
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: config.room));
+                          showSnackBar(
+                            context,
+                            theme,
+                            message: "Copied to the clipboard ${config.room}",
+                            backgroundColor: Colors.green,
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -78,25 +104,19 @@ class PlayScreen extends StatelessWidget {
           }
           return Scaffold(
             backgroundColor: theme.colorScheme.background,
-            appBar: UnoAppBar(
-              backgroundColor: theme.colorScheme.background,
-              title: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text(
-                  "Game Room",
-                  style: theme.materialData.textTheme.titleMedium,
-                ),
-              ),
-              automaticallyImplyLeading: false,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.exit_to_app),
-                  onPressed: () {
-                    context.read<GameBloc>().add(PlayerLeave());
-                  },
-                ),
-              ],
-            ),
+            appBar: UnoAppBar.game(
+                theme: theme,
+                onPressed: () {
+                  GameAlert.showAlert(
+                      context: context,
+                      theme: theme,
+                      onTapYes: () {
+                        context.read<GameBloc>().add(PlayerLeave());
+                      },
+                      onTapNo: () {
+                        Navigator.pop(context);
+                      });
+                }),
             body: Game(state: state),
           );
         },
