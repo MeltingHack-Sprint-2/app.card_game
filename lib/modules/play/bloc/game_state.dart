@@ -45,14 +45,20 @@ class GameState extends Equatable {
 
   @override
   List<Object?> get props => [
-    isConnected,
-    started,
-    players,
-    hands,
-    topCard,
-    errorMessage,
-    config,
-    currentPlayer,
-  ];
+        isConnected,
+        started,
+        players,
+        hands,
+        topCard,
+        errorMessage,
+        config,
+        currentPlayer,
+      ];
 }
 
+class PlayerLeaveState extends GameState {
+  const PlayerLeaveState({
+    required super.config,
+    required super.currentPlayer,
+  });
+}

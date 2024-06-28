@@ -34,13 +34,17 @@ class SocketService {
             .disableAutoConnect()
             .build());
 
+    // When socket connects, the current player joins the game
     _socket.onConnect((_) {
       _isConnected = true;
       listener(ConnectSocket());
       _logger.d("Connected to $wsUrl");
       _socket.emit('message', {
         'event': Events.PLAYER_JOIN,
-        'data': config.toJson(),
+        'data': {
+          "name": config.name,
+          "room": config.room,
+        },
       });
     });
     // Disconnect
@@ -49,28 +53,27 @@ class SocketService {
       listener(DisconnectSocket());
       _logger.d("Disconnected from $wsUrl");
     });
-    // On message
-    _socket.on('message', (data) {
-      listener(HandleSocketMessage(data));
-    });
 
     // On game notify
     _socket.on(Events.GAME_NOTIFY, (data) {
-      listener(HandleSocketMessage(data));
+      _logger.d("Game notify data $data");
+      listener(HandleGameNotify(data));
     });
     // On game state interval
-    _socket.on(Events.GAME_ROOM, (data) {
-      listener(GameStateInterval());
+    _socket.on("game::room", (data) {
+      _logger.d("Game room data $data");
+      listener(HandleGameRoom(data));
     });
 
     // On game over
     _socket.on(Events.GAME_OVER, (data) {
+      _logger.d("Game over data $data");
       listener(HandleGameOver(data));
     });
 
     // On game start
     _socket.on(Events.GAME_START, (_) {
-      listener(GameStateInterval());
+      listener(HandleGameStart());
     });
 
     // Reconnect handling
@@ -96,6 +99,8 @@ class SocketService {
   }
 
   void sendMessage(String event, dynamic data) {
+    _logger.d(event);
+    _logger.d(data);
     _socket.emit(event, data);
   }
 

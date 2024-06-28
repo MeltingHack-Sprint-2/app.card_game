@@ -1,6 +1,5 @@
 import 'package:card_game/components/cards/card_stack.dart';
 import 'package:card_game/components/cards/uno_card.dart';
-import 'package:card_game/components/loader/loader.dart';
 import 'package:card_game/modules/play/api/models/card_model.dart';
 import 'package:card_game/modules/play/bloc/game_bloc.dart';
 import 'package:card_game/modules/play/screens/widgets/avatar.dart';
@@ -24,14 +23,9 @@ class Game extends StatelessWidget {
     final topCard =
         state.topCard ?? CardModel(id: "1", color: "red", value: "skip");
 
-    if (!state.started) {
-      return const Loader(
-        label: 'Loading game...',
-      );
-    }
-
     final otherPlayer =
         players.firstWhere((player) => player.id != currentPlayer.id);
+    // final otherPlayer = Player(id: "1", name: "Zuqo");
 
     final ownCards = hands[currentPlayer.id] ?? [];
 
@@ -40,21 +34,25 @@ class Game extends StatelessWidget {
       child: Column(
         children: [
           _opponentDeck(playerName: otherPlayer.name, hidden: true),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CardStack(
-                size: UnoCardSizes.large,
-                onClick: () {
-                  context.read<GameBloc>().add(DrawCard());
-                },
-                hidden: true,
-              ),
-              CardStack(
-                size: UnoCardSizes.large,
-                card: topCard,
-              ),
-            ],
+          SizedBox(
+            // width: double.infinity,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CardStack(
+                  size: UnoCardSizes.large,
+                  onClick: () {
+                    context.read<GameBloc>().add(DrawCard());
+                  },
+                  hidden: true,
+                ),
+                CardStack(
+                  size: UnoCardSizes.large,
+                  card: topCard,
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -90,14 +88,12 @@ Widget _playerDeck(
             }).toList(),
           ),
         ),
-        if (isCurrentPlayer)
-          const SizedBox(
-            height: 8,
-          ),
-        if (isCurrentPlayer)
-          Avatar(
-              // name: otherPlayer.name ,
-              name: playerName),
+        const SizedBox(
+          height: 8,
+        ),
+        Avatar(
+            // name: otherPlayer.name ,
+            name: playerName),
       ],
     ),
   );

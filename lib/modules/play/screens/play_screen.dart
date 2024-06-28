@@ -1,6 +1,12 @@
+import 'package:card_game/components/appbar/app_bar.dart';
+import 'package:card_game/components/buttons/button.dart';
+import 'package:card_game/components/buttons/text_button.dart';
+import 'package:card_game/components/loader/loader.dart';
+import 'package:card_game/core/router/routes.dart';
 import 'package:card_game/modules/play/api/models/game_config.dart';
 import 'package:card_game/modules/play/api/models/player_model.dart';
 import 'package:card_game/modules/play/bloc/game_bloc.dart';
+import 'package:card_game/modules/play/screens/widgets/avatar.dart';
 import 'package:card_game/modules/play/screens/widgets/game.dart';
 import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -21,15 +27,67 @@ class PlayScreen extends StatelessWidget {
       create: (context) =>
           GameBloc(config, currentPlayer), // Add config and current player
       child: BlocConsumer<GameBloc, GameState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is PlayerLeaveState) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              Routes.home,
+              (route) => false,
+            );
+          }
+        },
         builder: (context, state) {
+          if (!state.started) {
+            return Scaffold(
+                backgroundColor: theme.colorScheme.background,
+                body: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: state.players
+                            .map((e) => Avatar(name: e.name))
+                            .toList(),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const Loader(label: "Waiting for other players..."),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      PrimaryButton(
+                        text: "Start Game",
+                        onPressed: state.players.length > 1
+                            ? () =>
+                                context.read<GameBloc>().add(HandleGameStart())
+                            : null,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      EasyPokerTextButton(
+                        text: "Copy Room",
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ));
+          }
           return Scaffold(
             backgroundColor: theme.colorScheme.background,
-            appBar: AppBar(
-              title: Text(
-                "Game Room",
-                style: theme.materialData.textTheme.titleMedium,
+            appBar: UnoAppBar(
+              backgroundColor: theme.colorScheme.background,
+              title: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  "Game Room",
+                  style: theme.materialData.textTheme.titleMedium,
+                ),
               ),
+              automaticallyImplyLeading: false,
               actions: [
                 IconButton(
                   icon: const Icon(Icons.exit_to_app),

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:card_game/components/Textfields/primary.dart';
+import 'package:card_game/components/alerts/snackbar.dart';
 import 'package:card_game/components/appbar/app_bar.dart';
 import 'package:card_game/components/buttons/primary.dart';
 import 'package:card_game/core/form/form_property/form_property_type.dart';
@@ -36,6 +37,10 @@ class HostScreen extends StatelessWidget {
               "config": state.config,
               "player": state.currentPlayer
             });
+          } else if (state.errorMessage != null) {
+            showSnackBar(context, theme,
+                message: state.errorMessage!,
+                backgroundColor: theme.colorScheme.error);
           }
         },
         builder: (context, state) => Scaffold(
@@ -94,7 +99,7 @@ class HostScreen extends StatelessWidget {
                 onPressed: state.isValid
                     ? () => context.read<HostBloc>().add(HostGameEvent(
                           name: state.name.value,
-                          room: room, // TODO::
+                          room: room,
                           handSize: state.handSize.value,
                         ))
                     : null,
