@@ -18,12 +18,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   late SocketService _socketService;
   Timer? _refetchTimer;
   final _logger = Logger();
+  bool _isClosed = false;
+
   GameBloc(GameConfig config, String currentPlayer)
       : super(GameState(config: config, currentPlayer: currentPlayer)) {
     // Listen to events
     on<ConnectSocket>(_onConnectSocket);
     on<DisconnectSocket>(_onDisconnectSocket);
-    on<SendMessage>(_onSendMessage);
     on<GameStateInterval>(_onGameStateInterval);
     on<UpdateGameState>(_onUpdateGameState);
     on<PlayCard>(_onPlayCard);
@@ -32,23 +33,33 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<HandleGameRoom>(_onHandleGameRoom);
     on<HandleGameNotify>(_handleGameNotify);
     on<HandleGameOver>(_onHandleGameOver);
+    on<HandleInitialGameStart>(_onHandleInitialGameStart);
     on<HandleGameStart>(_onHandleGameStart);
 
     // _logger.d("Attempting to Connect");
     _socketService = SocketService(listener: (event) {
-      _logger.d("Recieved event $event");
-      add(event);
+      // _logger.d("Recieved event $event")
+      if (!_isClosed) {
+        add(event);
+      }
     });
 
     _socketService.connect(config: config, currentPlayer: currentPlayer);
   }
 
+  void _onHandleInitialGameStart(
+      HandleInitialGameStart event, Emitter<GameState> emit) {
+    emit(state.copyWith(started: true));
+  }
+
   void _onHandleGameStart(HandleGameStart event, Emitter<GameState> emit) {
     emit(state.copyWith(started: true));
-    _socketService.sendMessage(Events.GAME_START, {
-      "room": state.config.room,
-      "hand_size": state.config.handSize,
-    });
+    if (state.started) {
+      _socketService.sendMessage(Events.GAME_START, {
+        "room": state.config.room,
+        "hand_size": state.config.handSize,
+      });
+    }
   }
 
   void _onHandleGameRoom(HandleGameRoom event, Emitter<GameState> emit) {
@@ -65,14 +76,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(state.copyWith(isConnected: false));
   }
 
-  void _onSendMessage(SendMessage event, Emitter<GameState> emit) {
-    // _logger.d("Message ${event.data}");
-    _socketService.sendMessage(event.event, event.data);
-  }
-
   void _onGameStateInterval(GameStateInterval event, Emitter<GameState> emit) {
     // _logger.d("Timmer!!");
-    _refetchTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    _refetchTimer = Timer.periodic(const Duration(seconds: 5000), (timer) {
       _socketService
           .sendMessage(Events.GAME_STATE, {'room': state.config.room});
     });
@@ -183,6 +189,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       case GameOverReason.error:
         emit(state.copyWith(errorMessage: "Something went wrong"));
     }
+    _socketService.disconnect();
   }
 
   void clearGameStateInterval() {
@@ -192,6 +199,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   @override
   Future<void> close() {
     _socketService.disconnect;
+    _isClosed = true;
     clearGameStateInterval();
     return super.close();
   }

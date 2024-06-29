@@ -39,6 +39,7 @@ class PlayScreen extends StatelessWidget {
           } else if (state is GameWonState) {
             Navigator.pushNamed(context, WinScreen.routename, arguments: {
               "winner": state.winner,
+              "currentPlayer": state.currentPlayer,
             });
           }
         },
@@ -124,7 +125,10 @@ class PlayScreen extends StatelessWidget {
                         Navigator.pop(context);
                       });
                 }),
-            body: Game(state: state),
+            body: Game(
+              state: state,
+              bloc: context.read<GameBloc>(),
+            ),
           );
         },
       ),

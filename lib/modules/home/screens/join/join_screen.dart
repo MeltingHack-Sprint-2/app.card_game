@@ -19,65 +19,66 @@ class JoinScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => JoinBloc(),
       child: BlocConsumer<JoinBloc, JoinState>(
-        listener: (context, state){
+        listener: (context, state) {
           if (state is JoinSuccessState) {
-            Navigator.pushNamed(context, PlayScreen.routename,
-                arguments: {
-                  "config": state.config,
-                  "player": state.currentPlayer
-                });
-          }else if (state.errorMessage != null) {
+            Navigator.pushNamed(context, PlayScreen.routename, arguments: {
+              "config": state.config,
+              "player": state.currentPlayer
+            });
+          } else if (state.errorMessage != null) {
             showSnackBar(context, theme,
                 message: state.errorMessage!,
                 backgroundColor: theme.colorScheme.error);
           }
         },
         builder: (context, state) => Scaffold(
+          backgroundColor: theme.colorScheme.background,
           appBar: UnoAppBar.create(theme: theme, context: context),
           body: ListView(
-              padding: const EdgeInsets.all(16.0),
-              children: [
-                Text("Join", style: theme.materialData.textTheme.displayLarge),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text("Enter Credentials to join game",
-                    style: theme.materialData.textTheme.bodyMedium),
-                const SizedBox(height: 24),
-                Text("Enter a name", style: theme.materialData.textTheme.bodyMedium),
-                const SizedBox(height: 16),
-                PrimaryTextField(
-                  onChanged: (value) {
-                    context.read<JoinBloc>().add(JoinFormPropertyChanged(
-                        type: JoinFormPropertyType.name, value: value));
-                  },
-                  hintText: "John Doe",
-                  errorText: state.name.valueInvalidMessage,
-                ),
-                const SizedBox(height: 16),
-                Text("Room", style: theme.materialData.textTheme.bodyMedium),
-                const SizedBox(height: 16),
-                PrimaryTextField(
-                  onChanged: (value) {
-                    context.read<JoinBloc>().add(JoinFormPropertyChanged(
-                        type: JoinFormPropertyType.room, value: value));
-                  },
-                  errorText: state.room.valueInvalidMessage,
-                ),
-                const SizedBox(height: 24),
-                PrimaryButton(
-                    inProgress: state.inProgress,
-                    text: "Join",
-                    onPressed: state.isValid
-                        ? () {
-                      context.read<JoinBloc>().add(JoinGameEvent(
-                          name: state.name.value, room: state.room.value));
-                    }
-                        : null),
-              ],
-            ),
+            padding: const EdgeInsets.all(16.0),
+            children: [
+              Text("Join", style: theme.materialData.textTheme.displayLarge),
+              const SizedBox(
+                height: 16,
+              ),
+              Text("Enter Credentials to join game",
+                  style: theme.materialData.textTheme.bodyMedium),
+              const SizedBox(height: 24),
+              Text("Enter a name",
+                  style: theme.materialData.textTheme.bodyMedium),
+              const SizedBox(height: 16),
+              PrimaryTextField(
+                onChanged: (value) {
+                  context.read<JoinBloc>().add(JoinFormPropertyChanged(
+                      type: JoinFormPropertyType.name, value: value));
+                },
+                hintText: "John",
+                errorText: state.name.valueInvalidMessage,
+              ),
+              const SizedBox(height: 16),
+              Text("Room", style: theme.materialData.textTheme.bodyMedium),
+              const SizedBox(height: 16),
+              PrimaryTextField(
+                onChanged: (value) {
+                  context.read<JoinBloc>().add(JoinFormPropertyChanged(
+                      type: JoinFormPropertyType.room, value: value));
+                },
+                errorText: state.room.valueInvalidMessage,
+              ),
+              const SizedBox(height: 24),
+              PrimaryButton(
+                  inProgress: state.inProgress,
+                  text: "Join",
+                  onPressed: state.isValid
+                      ? () {
+                          context.read<JoinBloc>().add(JoinGameEvent(
+                              name: state.name.value, room: state.room.value));
+                        }
+                      : null),
+            ],
           ),
         ),
+      ),
     );
   }
 }

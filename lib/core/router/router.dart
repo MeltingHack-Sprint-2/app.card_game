@@ -2,6 +2,7 @@ import 'package:card_game/core/router/routes.dart';
 import 'package:card_game/modules/home/screens/home_screen.dart';
 import 'package:card_game/modules/home/screens/host/host_screen.dart';
 import 'package:card_game/modules/home/screens/join/join_screen.dart';
+import 'package:card_game/modules/home/screens/splash/splash_screen.dart';
 import 'package:card_game/modules/play/screens/play_screen.dart';
 import 'package:card_game/modules/win/screens/win_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +30,12 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => WinScreen(
                   winnerName: args!["winner"],
+                  currentPlayer: args["currentPlayer"],
                 ));
+      case Routes.splahScreen:
+        return CupertinoPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
       default:
         return MaterialPageRoute<void>(
           builder: (_) => const Scaffold(

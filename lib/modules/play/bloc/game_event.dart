@@ -9,18 +9,15 @@ class ConnectSocket extends GameEvent {}
 
 class DisconnectSocket extends GameEvent {}
 
-class SendMessage extends GameEvent {
-  final String event;
-  final Map<String, dynamic> data;
-
-  SendMessage({required this.event, required this.data});
-}
+class HandleGameStart extends GameEvent {}
 
 class HandleGameStart extends GameEvent {}
 
 class GameStateInterval extends GameEvent {}
 
 class PlayerLeave extends GameEvent {}
+
+class HandleInitialGameStart extends GameEvent{}
 
 class UpdateGameState extends GameEvent {
   final dynamic data;

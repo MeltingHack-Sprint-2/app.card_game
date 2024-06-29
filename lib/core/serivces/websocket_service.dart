@@ -52,7 +52,7 @@ class SocketService {
 
     //On Game State
     _socket.on(Events.GAME_STATE, (data) {
-      _logger.d("Game STATE data $data");
+      // _logger.d("Game STATE data $data");
       listener(UpdateGameState(data));
     });
 
@@ -79,7 +79,7 @@ class SocketService {
 
     // On game start
     _socket.on(Events.GAME_START, (_) {
-      listener(HandleGameStart());
+      listener(HandleInitialGameStart());
     });
 
     // Reconnect handling

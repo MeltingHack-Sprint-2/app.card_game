@@ -19,7 +19,6 @@ class UnoCard extends StatelessWidget {
   final Player? currentPlayer;
   final bool hidden;
   final UnoCardSizes size;
-  // final void Function()? onClick;
   final void Function()? onClick;
 
   @override
@@ -27,11 +26,8 @@ class UnoCard extends StatelessWidget {
     final allowPlay = onClick != null && currentPlayer != null;
     final imageSrc = getCardImageURL(card, hidden: hidden);
     return GestureDetector(
-      onTap: () {
-        if (allowPlay) {
-          onClick;
-        }
-      },
+      onTap: onClick,
+
       child: SizedBox(
           // margin: const EdgeInsets.only(right: 4.0),
           height: size == UnoCardSizes.large

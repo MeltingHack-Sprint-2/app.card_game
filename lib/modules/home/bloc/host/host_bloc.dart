@@ -62,7 +62,7 @@ class HostBloc extends Bloc<HostEvent, HostState> {
       }
     } catch (e) {
       String errorMessage = ErrorMapper.getErrorMessage(e.toString());
-      state.copyWith(errorMessage: errorMessage);
+      state.copyWith(errorMessage: errorMessage, inProgress: false);
     }
   }
 }
