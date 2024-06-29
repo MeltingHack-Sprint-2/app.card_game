@@ -18,6 +18,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   late SocketService _socketService;
   Timer? _refetchTimer;
   final _logger = Logger();
+  bool _isClosed = false;
   GameBloc(GameConfig config, String currentPlayer)
       : super(GameState(config: config, currentPlayer: currentPlayer)) {
     // Listen to events
@@ -36,8 +37,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
     // _logger.d("Attempting to Connect");
     _socketService = SocketService(listener: (event) {
-      // _logger.d("Recieved event $event");
-      add(event);
+      // _logger.d("Recieved event $event")
+      if (!_isClosed) {
+        add(event);
+      }
     });
 
     _socketService.connect(config: config, currentPlayer: currentPlayer);
@@ -185,6 +188,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       case GameOverReason.error:
         emit(state.copyWith(errorMessage: "Something went wrong"));
     }
+    _socketService.disconnect();
   }
 
   void clearGameStateInterval() {
@@ -194,6 +198,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   @override
   Future<void> close() {
     _socketService.disconnect;
+    _isClosed = true;
     clearGameStateInterval();
     return super.close();
   }
