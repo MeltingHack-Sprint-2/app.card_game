@@ -11,8 +11,6 @@ class DisconnectSocket extends GameEvent {}
 
 class HandleGameStart extends GameEvent {}
 
-class HandleGameStart extends GameEvent {}
-
 class GameStateInterval extends GameEvent {}
 
 class PlayerLeave extends GameEvent {}

@@ -36,7 +36,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<HandleInitialGameStart>(_onHandleInitialGameStart);
     on<HandleGameStart>(_onHandleGameStart);
 
-    // _logger.d("Attempting to Connect");
     _socketService = SocketService(listener: (event) {
       // _logger.d("Recieved event $event")
       if (!_isClosed) {
