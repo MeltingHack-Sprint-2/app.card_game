@@ -11,6 +11,7 @@ void main() async {
   // Ensure widgets binding is initialized before running the app.
   WidgetsFlutterBinding.ensureInitialized();
   // Set preferred device orientations to portrait mode (both up and down).
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

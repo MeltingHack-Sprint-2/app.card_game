@@ -27,6 +27,7 @@ class UnoCard extends StatelessWidget {
     final imageSrc = getCardImageURL(card, hidden: hidden);
     return GestureDetector(
       onTap: onClick,
+
       child: SizedBox(
           // margin: const EdgeInsets.only(right: 4.0),
           height: size == UnoCardSizes.large

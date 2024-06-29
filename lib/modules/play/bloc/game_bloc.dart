@@ -19,6 +19,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   Timer? _refetchTimer;
   final _logger = Logger();
   bool _isClosed = false;
+
   GameBloc(GameConfig config, String currentPlayer)
       : super(GameState(config: config, currentPlayer: currentPlayer)) {
     // Listen to events
