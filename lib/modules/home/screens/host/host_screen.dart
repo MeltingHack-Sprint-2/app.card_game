@@ -54,13 +54,20 @@ class HostScreen extends StatelessWidget {
               Text("Enter Credentials to host game",
                   style: theme.materialData.textTheme.bodyMedium),
               const SizedBox(height: 24),
+              Text(
+                "Enter a name",
+                style: theme.materialData.textTheme.bodyMedium,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
               PrimaryTextField(
                 errorText: state.name.valueInvalidMessage,
                 onChanged: (value) {
                   context.read<HostBloc>().add(HostFormPropertyChanged(
                       type: HostFormPropertyType.name, value: value));
                 },
-                hintText: "John Doe",
+                hintText: "John",
               ),
               const SizedBox(
                 height: 16,
@@ -76,20 +83,20 @@ class HostScreen extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              Text(
-                "Hand Size",
-                style: theme.materialData.textTheme.bodyMedium,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              PrimaryTextField(
-                errorText: state.handSize.valueInvalidMessage,
-                onChanged: (value) {
-                  context.read<HostBloc>().add(HostFormPropertyChanged(
-                      type: HostFormPropertyType.handSize, value: value));
-                },
-              ),
+              // Text(
+              //   "Hand Size",
+              //   style: theme.materialData.textTheme.bodyMedium,
+              // ),
+              // const SizedBox(
+              //   height: 16,
+              // ),
+              // PrimaryTextField(
+              //   errorText: state.handSize.valueInvalidMessage,
+              //   onChanged: (value) {
+              //     context.read<HostBloc>().add(HostFormPropertyChanged(
+              //         type: HostFormPropertyType.handSize, value: value));
+              //   },
+              // ),
               const SizedBox(
                 height: 24,
               ),
@@ -100,7 +107,7 @@ class HostScreen extends StatelessWidget {
                     ? () => context.read<HostBloc>().add(HostGameEvent(
                           name: state.name.value,
                           room: room,
-                          handSize: state.handSize.value,
+                          handSize: state.handSize.value ?? "7",
                         ))
                     : null,
               ),

@@ -1,19 +1,23 @@
 import 'dart:ui';
+import 'package:card_game/components/buttons/text_button.dart';
+import 'package:card_game/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'dart:math' as math;
 
 class WinScreen extends StatefulWidget {
   static const routename = "/winScreen";
   final String winnerName;
-
-  const WinScreen({Key? key, required this.winnerName})
-      : super(key: key); // Made constructor const
+  final String currentPlayer;
+  const WinScreen({
+    super.key,
+    required this.winnerName,
+    required this.currentPlayer,
+  }); // Made constructor const
 
   @override
-  _WinScreenState createState() => _WinScreenState();
+  State<WinScreen> createState() => _WinScreenState();
 }
 
 class _WinScreenState extends State<WinScreen> {
@@ -36,6 +40,8 @@ class _WinScreenState extends State<WinScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final theme = context.easyPockerTheme;
+        final bool isWinner = widget.currentPlayer == widget.winnerName;
         return Dialog(
           backgroundColor:
               Colors.transparent, // Make dialog background transparent
@@ -54,16 +60,18 @@ class _WinScreenState extends State<WinScreen> {
                   mainAxisSize: MainAxisSize.min, // Use minimum space
                   children: <Widget>[
                     const SizedBox(height: 20),
-                    const Text('Congratulations🎉!',
-                        style: TextStyle(fontSize: 24)),
+                    Text(isWinner ? 'Congratulations🎉!' : "Nice Game",
+                        style: theme.materialData.textTheme.bodyLarge),
                     const SizedBox(height: 20),
-                    const Text('You are the winner!',
-                        style: TextStyle(fontSize: 18)),
+                    Text(
+                        isWinner
+                            ? 'You are the winner!'
+                            : '${widget.winnerName} won!',
+                        style: theme.materialData.textTheme.bodyMedium),
                     const SizedBox(height: 20),
-                    TextButton(
-                      child: const Text('Go Back Home'),
+                    EasyPokerTextButton(
+                      text: "Go To Home",
                       onPressed: () {
-                        // Navigate back home, adjust according to your app's navigation setup
                         Navigator.of(context)
                             .popUntil((route) => route.isFirst);
                       },
@@ -87,7 +95,7 @@ class _WinScreenState extends State<WinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const imgSrc = 'cards/win.svg';
+    const imgSrc = 'assets/cards/win.svg';
     return Scaffold(
         body: GestureDetector(
       onTap: _showPopup,

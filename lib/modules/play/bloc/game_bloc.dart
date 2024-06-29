@@ -23,7 +23,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     // Listen to events
     on<ConnectSocket>(_onConnectSocket);
     on<DisconnectSocket>(_onDisconnectSocket);
-    on<SendMessage>(_onSendMessage);
     on<GameStateInterval>(_onGameStateInterval);
     on<UpdateGameState>(_onUpdateGameState);
     on<PlayCard>(_onPlayCard);
@@ -32,23 +31,31 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<HandleGameRoom>(_onHandleGameRoom);
     on<HandleGameNotify>(_handleGameNotify);
     on<HandleGameOver>(_onHandleGameOver);
+    on<HandleInitialGameStart>(_onHandleInitialGameStart);
     on<HandleGameStart>(_onHandleGameStart);
 
     // _logger.d("Attempting to Connect");
     _socketService = SocketService(listener: (event) {
-      _logger.d("Recieved event $event");
+      // _logger.d("Recieved event $event");
       add(event);
     });
 
     _socketService.connect(config: config, currentPlayer: currentPlayer);
   }
 
+  void _onHandleInitialGameStart(
+      HandleInitialGameStart event, Emitter<GameState> emit) {
+    emit(state.copyWith(started: true));
+  }
+
   void _onHandleGameStart(HandleGameStart event, Emitter<GameState> emit) {
     emit(state.copyWith(started: true));
-    _socketService.sendMessage(Events.GAME_START, {
-      "room": state.config.room,
-      "hand_size": state.config.handSize,
-    });
+    if (state.started) {
+      _socketService.sendMessage(Events.GAME_START, {
+        "room": state.config.room,
+        "hand_size": state.config.handSize,
+      });
+    }
   }
 
   void _onHandleGameRoom(HandleGameRoom event, Emitter<GameState> emit) {
@@ -65,14 +72,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(state.copyWith(isConnected: false));
   }
 
-  void _onSendMessage(SendMessage event, Emitter<GameState> emit) {
-    // _logger.d("Message ${event.data}");
-    _socketService.sendMessage(event.event, event.data);
-  }
-
   void _onGameStateInterval(GameStateInterval event, Emitter<GameState> emit) {
     // _logger.d("Timmer!!");
-    _refetchTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    _refetchTimer = Timer.periodic(const Duration(seconds: 5000), (timer) {
       _socketService
           .sendMessage(Events.GAME_STATE, {'room': state.config.room});
     });

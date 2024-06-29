@@ -3,16 +3,18 @@ import 'package:card_game/components/cards/uno_card.dart';
 import 'package:card_game/modules/play/api/models/card_model.dart';
 import 'package:card_game/modules/play/bloc/game_bloc.dart';
 import 'package:card_game/modules/play/screens/widgets/avatar.dart';
+import 'package:card_game/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 class Game extends StatelessWidget {
   final GameState state;
+  final GameBloc bloc;
   const Game({
     super.key,
     required this.state,
+    required this.bloc,
   });
 
   @override
@@ -40,7 +42,7 @@ class Game extends StatelessWidget {
               CardStack(
                 size: UnoCardSizes.large,
                 onClick: () {
-                  context.read<GameBloc>().add(DrawCard());
+                  bloc.add(DrawCard());
                 },
                 hidden: true,
               ),
@@ -59,7 +61,7 @@ class Game extends StatelessWidget {
               hidden: false,
               playerId: currentPlayer.id,
               context: context,
-              ),
+              bloc: bloc),
         ],
       ),
     );
@@ -69,6 +71,7 @@ class Game extends StatelessWidget {
 Widget _playerDeck({
   required String playerName,
   required List<CardModel> cards,
+  required GameBloc bloc,
   required bool hidden,
   required BuildContext context,
   required String playerId,
@@ -79,11 +82,11 @@ Widget _playerDeck({
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            // mainAxisSize: MainAxisSize.min,
             children: cards.map((card) {
               return UnoCard(
                 card: card,
-                onClick: () => context.read<GameBloc>().add(PlayCard(playerId: playerId, cardId: card.id)),
+                onClick: () =>
+                    bloc.add(PlayCard(playerId: playerId, cardId: card.id)),
                 hidden: hidden,
               );
             }).toList(),
@@ -92,9 +95,7 @@ Widget _playerDeck({
         const SizedBox(
           height: 8,
         ),
-        Avatar(
-            // name: otherPlayer.name ,
-            name: playerName),
+        Avatar(color: AppColors.lightGrey, name: playerName),
       ],
     ),
   );
@@ -107,16 +108,13 @@ Widget _opponentDeck({
   return Expanded(
     child: Column(
       children: [
-        Avatar(
-            // name: otherPlayer.name ,
-            name: playerName),
+        Avatar(name: playerName, color: AppColors.lightGrey),
         const SizedBox(
           height: 8,
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            // mainAxisSize: MainAxisSize.min,
             children: [
               UnoCard(
                 card: CardModel(id: '1', color: 'blue', value: '1'),

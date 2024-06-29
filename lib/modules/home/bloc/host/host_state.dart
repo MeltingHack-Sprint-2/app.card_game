@@ -61,7 +61,7 @@ class HostState extends Equatable {
   }
 
   bool get isValid {
-    return name.propertyIsValid && handSize.propertyIsValid;
+    return name.propertyIsValid;
   }
 
   @override
